@@ -203,7 +203,7 @@ $(document).ready(function(){
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                 Accept: "aplication/json; charset=utf-8",
-                "Content-Type": "application/json; charset=utf-8"
+                "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
             },
             cache: false,
             data: $('.docForm').serialize(),

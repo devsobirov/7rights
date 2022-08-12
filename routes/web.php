@@ -23,7 +23,8 @@ Route::get('/','HomeController@Index')->name('homepage');
 Route::get('/docs', 'DocumentsController@index')->name('docs.index');
 Route::get('/open/{id}','DocumentsController@create')->name('docs.create');
 Route::post('/open/{id}', 'DocumentsController@open')->name('docs.open');;
-Route::post('/save', 'DocumentsController@save')->name('docs.save');
+Route::post('/save', 'DocumentsController@save')->name('docs.save')
+    ->middleware(['auth']);
 
 Route::get('/edit/{id?}','HomeController@edit');
 Route::post('/edit/{id}', 'HomeController@edit');

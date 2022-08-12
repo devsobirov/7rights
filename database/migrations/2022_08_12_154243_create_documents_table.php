@@ -11,10 +11,19 @@ class CreateDocumentsTable extends Migration
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-//
-//            $table->string('name');
-//            $table->string('template')->nullable();
-//            $table->mediumText('description')->nullable();
+
+            $table->unsignedBigInteger('template_id')->nullable();
+            $table->unsignedBigInteger('user_id');
+            $table->json('data');
+
+            $table->foreign('template_id')
+                ->references('id')->on('templates')
+                ->nullOnDelete()
+                ->cascadeOnUpdate();
+            $table->foreign('user_id')
+                ->references('id')->on('users')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
         });
     }
 
