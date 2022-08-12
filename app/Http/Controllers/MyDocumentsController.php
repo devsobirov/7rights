@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Document;
 use App\Http\Controllers\BaseDocumentController as BaseController;
+use GuzzleHttp\Utils;
 use Illuminate\Http\Request;
 
 class MyDocumentsController extends BaseController
@@ -23,7 +24,7 @@ class MyDocumentsController extends BaseController
     public function print(Document $document)
     {
         abort_if($document->user_id != auth()->id(), 403);
-        $pdf = $this->generatePdf($document->template->view_path, $document->data);
+        $pdf = $this->getPdfIfAllowed($document);
 
         return $pdf->stream('my_pdf.pdf');
     }
@@ -31,8 +32,18 @@ class MyDocumentsController extends BaseController
     public function download(Document $document)
     {
         abort_if($document->user_id != auth()->id(), 403);
-        $pdf = $this->generatePdf($document->template->view_path, $document->data);
+        $pdf = $this->getPdfIfAllowed($document);
 
         return $pdf->download('my_pdf.pdf');
+    }
+
+    private function getPdfIfAllowed($document)
+    {
+        abort_if($document->user_id != auth()->id(), 403);
+        $inputData = $document->data;
+        if (!is_array($inputData)) {
+            $inputData = Utils::jsonDecode($inputData, true);
+        }
+        return $this->generatePdf($document->template->view_path, $inputData);
     }
 }
