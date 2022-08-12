@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Template;
 use App\Models\Document;
 use Illuminate\Http\Request;
-use App\MainModel;
 use PDF;
 use PhpParser\Comment\Doc;
 
@@ -12,8 +12,8 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $doc = Document::getAllDocuments();
-        return view('docs.list',['list'=>$doc]);
+        $templates = Template::getAllTemplates();
+        return view('docs.list',['list' => $templates]);
     }
 
     public function myDocs()

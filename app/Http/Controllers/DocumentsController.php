@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\DocumentHelper;
 use App\Models\Document;
+use App\Models\Template;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
@@ -11,22 +12,22 @@ class DocumentsController extends Controller
 {
     public function index()
     {
-        $doc = Document::getAllDocuments();
-        return view('docs.list',['list'=>$doc]);
+        $templates = Template::getAllTemplates();
+        return view('docs.list',['list'=> $templates ]);
     }
 
     public function create($id)
     {
-        $doc = Document::getDocumentTplOrFail($id);
-        return view($doc->template, ['doc'=>$doc, 'doc_id'=>$id]);
+        $template = Template::getTemplateOrFail($id);
+        return view($template->view_path, ['doc' => $template, 'doc_id' => $id]);
     }
 
     public function open(Request $request)
     {
         $data = $request->post();
-        $document = Document::getDocumentTplOrFail($data['doc_id']);
+        $template = Template::getTemplateOrFail($data['doc_id']);
 
-        $pdf = $this->generatePdf($document->template, $data);
+        $pdf = $this->generatePdf($template->view_path, $data);
         //$pdf->save(storage_path().'_doc.pdf');
 
         return $pdf->stream('my.pdf');//,array('Attachment'=>0))->header('Content-Type','application/pdf');
