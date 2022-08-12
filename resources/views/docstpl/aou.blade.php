@@ -2,9 +2,9 @@
 @section('content')
 <div class="card">
 	<div class="card-header"><strong>Редактирование документа: </strong>{{$doc->name}}</div>
-	
+
 	<form method = "POST" class = "docForm">
-	
+
 		@csrf
 		<div class = "row">
 			<!--<button class = "btn btn-primary formPutDemo">Заполнить демо</button>-->
@@ -124,13 +124,13 @@
 						<div class="col-sm-10">
 							<input type="text" class="form-control" id="sch-fax" name = "sch_pol_dolg" placeholder="Главный уборщик"> </div>
 					</div>
-					
+
 				</div>
 			</div>
-			
+
 			<hr>
-			
-		
+
+
 		</div>
 		<hr>
 			@include('tables.aou');
@@ -145,7 +145,7 @@
 				<button class="btn btn-primary">Печать</button>
 			</div>
 		</div>
-</div>
+
 </form>
 </div>
  @endsection

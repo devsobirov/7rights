@@ -100,7 +100,7 @@
         </button>
       </div>
       <div class="modal-body">
-        
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
@@ -117,5 +117,9 @@
 <script src="https://kit.fontawesome.com/5e88e4cf41.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css">
 <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>    -->
-<script src="{!! url('assets/core.js') !!}"></script>
+
+<script>
+    let userId = {{ auth()->id() }}
+</script>
+<script src="{{ asset('assets/core.js') }}"></script>
 </html>

@@ -34,7 +34,7 @@ class HomeController extends Controller
     // сохранение документа
     public function saveDoc(){
        $r = rand(1,2);
-       return $r==1 ? true : false; 
+       return true; //$r==1 ? true : false;
     }
     // Создание нового документа
     public function new($id){
@@ -46,7 +46,7 @@ class HomeController extends Controller
         return view($doc->form_template, ['doc'=>$doc, 'doc_id'=>$id]);
     }
     // отдать на загрузку.
-    public function convertDoc(Request $request){
+    public function convertDoc1(Request $request){
 
         if ($request->isMethod('post')) {
             $input = $request->all();
@@ -73,19 +73,19 @@ class HomeController extends Controller
                 }
                 $input['sum_text'] = $this->num2str($sum);
             }
-            
+
             $input['nds_perc'] = isset($input['nds']) ? $input['nds'] : 0;
             $input['gruzSum'] = $sum;
             $d_a = explode('.',$doc->form_template);
             //$d_a[1] = 'test2';
-            
-            
+
+
             // PDF
             $pdf = !isset($input['orientation_horizontal']) ? PDF::loadView('blanks.'.$d_a[1], $input) : PDF::loadView('blanks.'.$d_a[1], $input,[],['format'=>'A4-L', 'display_mode'=>'fullpage', 'orientation' => 'L']);
-         
+
             $pdf->save(storage_path().'_doc.pdf');
 
-         
+
             return $pdf->stream('my.pdf');//,array('Attachment'=>0))->header('Content-Type','application/pdf');
         }
     }
@@ -108,7 +108,7 @@ class HomeController extends Controller
             array('миллион',  'миллиона',  'миллионов',  0),
             array('миллиард', 'миллиарда', 'миллиардов', 0),
         );
-     
+
         list($rub, $kop) = explode('.', sprintf("%015.2f", floatval($num)));
         $out = array();
         if (intval($rub) > 0) {
@@ -131,9 +131,9 @@ class HomeController extends Controller
         $out[] = $kop . ' ' . $this->morph($kop, $unit[0][0], $unit[0][1], $unit[0][2]); // kop
         return trim(preg_replace('/ {2,}/', ' ', join(' ', $out)));
     }
- 
 
-    public function morph($n, $f1, $f2, $f5) 
+
+    public function morph($n, $f1, $f2, $f5)
     {
         $n = abs(intval($n)) % 100;
         if ($n > 10 && $n < 20) return $f5;

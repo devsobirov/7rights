@@ -17,4 +17,5 @@ laravel-bootstrap.zip
 .cache
 .subversion/
 .bash_history
+.idea
 
