@@ -30,7 +30,4 @@ class MainModel extends Model
     public function getUserDocument(){
 
     }
-
-
-
 }

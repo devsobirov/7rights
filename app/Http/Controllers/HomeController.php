@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Document;
 use Illuminate\Http\Request;
 use App\MainModel;
 use PDF;
@@ -27,26 +28,28 @@ class HomeController extends Controller
         return $this->docs();
     }
 
-    public function docs(){
-        $doc = MainModel::getAllTpl();
+    public function docs()
+    {
+        $doc = Document::getAllDocuments();
         return view('docs.list',['list'=>$doc]);
     }
     // сохранение документа
     public function saveDoc(){
-       $r = rand(1,2);
-       return true; //$r==1 ? true : false;
+       return (bool) rand(0,1);
     }
+
     // Создание нового документа
-    public function new($id){
-        $doc = MainModel::getDocumentTpl($id);
-		//dd(\DB::table('docs')->get());
+    public function new($id)
+    {
+        $doc = Document::getDocumentTplOrFail($id);
+
         if (!$doc->form_template){
             abort(404);
         }
         return view($doc->form_template, ['doc'=>$doc, 'doc_id'=>$id]);
     }
     // отдать на загрузку.
-    public function convertDoc1(Request $request){
+    public function convertDoc(Request $request){
 
         if ($request->isMethod('post')) {
             $input = $request->all();
