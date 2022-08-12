@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\DocumentsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,15 +17,15 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/','HomeController@Index')->name('homepage');
-Auth::routes();
 
 //Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/docs', 'HomeController@docs')->name('docs.index');
-// создание документа.
-Route::get('/new/{id?}','HomeController@new')->name('docs.new');
-Route::post('/new/{id}', 'HomeController@convertDoc')->name('docs.print');;
-Route::post('/daveDoc', 'HomeController@saveDoc')->name('docs.save');;
+Route::get('/docs', 'DocumentsController@index')->name('docs.index');
+Route::get('/open/{id}','DocumentsController@create')->name('docs.create');
+Route::post('/open/{id}', 'DocumentsController@open')->name('docs.open');;
+Route::post('/save', 'DocumentsController@save')->name('docs.save');
 
 Route::get('/edit/{id?}','HomeController@edit');
 Route::post('/edit/{id}', 'HomeController@edit');
+
+Auth::routes();

@@ -1,88 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
 
-use App\Models\Document;
-use Illuminate\Http\Request;
-use App\MainModel;
-use PDF;
-use PhpParser\Comment\Doc;
+namespace App\Helpers;
 
-class HomeController extends Controller
+
+class DocumentHelper
 {
-    public function index()
-    {
-        $doc = Document::getAllDocuments();
-        return view('docs.list',['list'=>$doc]);
-    }
-
-    public function myDocs()
-    {
-        //
-    }
-
-    public function docs()
-    {
-        $doc = Document::getAllDocuments();
-        return view('docs.list',['list'=>$doc]);
-    }
-    // сохранение документа
-    public function saveDoc(){
-       return (bool) rand(0,1);
-    }
-
-    // Создание нового документа
-    public function new($id)
-    {
-        $doc = Document::getDocumentTplOrFail($id);
-
-        return view($doc->template, ['doc'=>$doc, 'doc_id'=>$id]);
-    }
-    // отдать на загрузку.
-    public function convertDoc(Request $request){
-
-        if ($request->isMethod('post')) {
-            $input = $request->all();
-            $doc = Document::getDocumentTplOrFail($input['doc_id']);
-
-            /*
-            echo '<pre>';
-            print_r($input);
-            exit();
-         */
-            $input['sch_date'] = $this->date2text($input['sch_date']);
-            $input['sch_corrects_date'] = isset($input['sch_corrects_date']) ? $this->date2text($input['sch_corrects_date']) : '';
-            $input['sch_expired'] = $this->date2text((isset($input['sch_expired']) ? $input['sch_expired'] : ''));
-            $sum = 0;
-
-            // Закладка. Убрать
-            if (isset($input['table'])){
-                foreach ($input['table'] as $t){
-                    if (isset($t['gruzCount'])){
-                        $sum = $sum+$t['gruzCount'] * $t['gruzPrice'];
-                    }
-                }
-                $input['sum_text'] = $this->num2str($sum);
-            }
-
-            $input['nds_perc'] = isset($input['nds']) ? $input['nds'] : 0;
-            $input['gruzSum'] = $sum;
-            $d_a = explode('.',$doc->form_template);
-            //$d_a[1] = 'test2';
-
-
-            // PDF
-            $pdf = !isset($input['orientation_horizontal']) ? PDF::loadView('blanks.'.$d_a[1], $input) : PDF::loadView('blanks.'.$d_a[1], $input,[],['format'=>'A4-L', 'display_mode'=>'fullpage', 'orientation' => 'L']);
-
-            $pdf->save(storage_path().'_doc.pdf');
-
-
-            return $pdf->stream('my.pdf');//,array('Attachment'=>0))->header('Content-Type','application/pdf');
-        }
-    }
-
-    // суммы прописью
-    public function num2str($num)
+    /**
+     *  Вернет сумму прописью
+     *
+     * @param int $num
+     * @return string
+     */
+    public function numToStr($num): string
     {
         $nul = 'ноль';
         $ten = array(
@@ -134,7 +64,14 @@ class HomeController extends Controller
         return $f5;
     }
 
-    public function date2text($date){
+    /**
+     * Реформатирует заданную дату
+     *
+     * @param string $date
+     * @return string
+     */
+    public function dateToText($date): string
+    {
         $date = !$date ? date("d.n.y",time()) : date("d.n.Y", strtotime($date));
         $date = explode('.',$date);
         $months = array('нулября', 'января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря');

@@ -11,7 +11,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" ></script>
-    <script src="{!! url('assets/tinymce/tinymce.min.js') !!}"></script>
+    <script src="{{ asset('assets/tinymce/tinymce.min.js') }}"></script>
 
 
 
@@ -110,16 +110,16 @@
 </div>
 
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-<!--
-<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
--->
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.js"></script> -->
+
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <script src="https://kit.fontawesome.com/5e88e4cf41.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css">
 <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>    -->
 
 <script>
-    let userId = {{ auth()->id() }}
+    let userId = "{{ auth()->id() }}";
+    let saveUrl = "{{ route('docs.save') }}";
 </script>
 <script src="{{ asset('assets/core.js') }}"></script>
 </html>

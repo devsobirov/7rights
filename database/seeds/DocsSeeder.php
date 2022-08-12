@@ -23,7 +23,7 @@ class DocsSeeder extends Seeder
 			],
 			[
 				'name' => 'Товарная накладная',
-				'form_template' => 'none',
+				'template' => 'none',
 			],
 			[
 				'name' => 'Доверенность (ТМЦ)',

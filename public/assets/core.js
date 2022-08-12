@@ -1,13 +1,13 @@
 	/**** TINYMCE *******/
 $(document).ready(function(){
 	tinymce.init({
-        selector: 'textarea#docs-comment', 
+        selector: 'textarea#docs-comment',
         height: 200,
         menubar:false
     });
 
 	$('body').on('focus',".dateForm", function(){
-        $(this).datepicker({  
+        $(this).datepicker({
 			dateFormat: 'dd.mm.yy',
 			setDate: new Date
 		});
@@ -17,36 +17,36 @@ $(document).ready(function(){
 		$(this).attr('data-tag',index);
 	});
 
-*/	
-	
+*/
+
 	/* для корректировочно сч-ф */
 	iter = 0;
 	$('#shfCorAddRow').on('click',function(){
 
-		t = $(this).parents('table'); 
+		t = $(this).parents('table');
 		t.find('.clone1').clone().removeAttr('class').attr('class','lastIns').appendTo(t.find('.corrBody')).show();
 		t.find('.clone2').clone().removeAttr('class').attr('class','lastIns').appendTo(t.find('.corrBody')).show();
 		t.find('.clone3').clone().removeAttr('class').attr('class','lastIns').appendTo(t.find('.corrBody')).show();
 		t.find('.clone4').clone().removeAttr('class').attr('class','lastIns').appendTo(t.find('.corrBody')).show();
 
 		$('textarea').each(function(index){
-			if ($(this).parents('tr').attr('class') !== 'clone1' || $(this).parent().attr('class') !== 'clone2' || $(this).parent().attr('class') !== 'clone3' || $(this).parent().attr('class') !== 'clone4'){			
-				p = $(this).parents('tr');			
+			if ($(this).parents('tr').attr('class') !== 'clone1' || $(this).parent().attr('class') !== 'clone2' || $(this).parent().attr('class') !== 'clone3' || $(this).parent().attr('class') !== 'clone4'){
+				p = $(this).parents('tr');
 				p.find('.rowCount').html(index);
 				ind = index-1;
 				tag = $(this).parents('table').attr('id')+'['+ind+']';
 				$(this).attr('name', tag+'['+$(this).attr('data-id')+']');
 				iter = index;
-						
+
 				$(this).find('.lastIns input').each(function(index){
 					console.log('input');
-					console.log('Iteration: '+iter);	
+					console.log('Iteration: '+iter);
 					ins = $(this).find('input');
-					ins.attr('name', tag+'['+$(ins).attr('data-id')+']');	
+					ins.attr('name', tag+'['+$(ins).attr('data-id')+']');
 					$(this).removeAttr('class');
-				});	
-			
-				
+				});
+
+
 			}
 		});
 		$('.lastIns').find('input').each(function(){
@@ -68,21 +68,21 @@ $(document).ready(function(){
 		t = $(this).parents('table');
 		tag = t.attr('id');
 		t.find('.clone').clone().removeAttr('class').appendTo(t.find('.tableBody')).show();
-		
+
 		t.find('.tblRowCount').each(function(index){
-	
+
 			if ($(this).parent().attr('class') !== 'clone'){
 				$(this).text(index);
 				$(this).parent().find('input').each(function(){
-				
+
 					$(this).attr('name',tag+'['+index+']['+$(this).attr('data-id')+']');
-					
+
 				});
 			}
 		})
-		
+
 		$('.tblRowCount').each(function(){
-					
+
 			if ($(this).text() === '' && $(this).parent().attr('id') !== 'toInsert'){
 				$(this).text(insCnt);
 				insCnt++;
@@ -95,16 +95,16 @@ $(document).ready(function(){
 				});
 			}
 		});
-		
+
 	});
 	/* Переделать таблицу и убрать! */
 	$('#schfaddTableRow').on('click',function(){
 		schfvnt = schfcnt++;
 		rowCont = 0;
 		$('#toInsert').clone().removeAttr("id").appendTo(($('#toInsert')).parent()).show();
-	
+
 		$('.tblRowCount').each(function(){
-					
+
 			if ($(this).text() === '' && $(this).parent().attr('id') !== 'toInsert'){
 				$(this).text(insCnt);
 				insCnt++;
@@ -122,10 +122,10 @@ $(document).ready(function(){
 	/* Переделать таблицу и убрать! */
 	$('#addTableRow').on('click',function(tblCnt){
 		tblCnt = tblCnt++;
-		$("#toAppend").clone().removeAttr("id").appendTo($("#toAppend").parent()).show();	
+		$("#toAppend").clone().removeAttr("id").appendTo($("#toAppend").parent()).show();
 		cnt = 2;
-		$('.gruzRowCnt').each(function(cnt){			
-			
+		$('.gruzRowCnt').each(function(cnt){
+
 				if ($(this).text() === '' && $(this).parent().attr('id') !== 'toAppend'){
 					$(this).text(cnt);// = cnt;
 					par = $(this).parent();
@@ -139,7 +139,7 @@ $(document).ready(function(){
 	});
 
 	/* Переделать таблицу и убрать! */
-	 $(document).on('click touchstart', '.delRow', function(){ 
+	 $(document).on('click touchstart', '.delRow', function(){
             $(this).parent().parent().remove();
         	calcAll();
         });
@@ -165,7 +165,7 @@ $(document).ready(function(){
 	 $(document).on('input keyup keydown change','.gruzCount, .gruzPrice',function(){
 	 	calc($(this));
 	 });
-	
+
 	/* Навесить единые триггеры на радио и убрать!  */
 	$('.gruzPolRadio').on('change click input',function(){
 		elId = $(this).attr('data-el');
@@ -173,7 +173,7 @@ $(document).ready(function(){
 			$('#'+elId).hide();
 		}else{
 			$('#'+elId).show();
-		}				
+		}
 	});
 
 	$('.sch_corrects').on('change click input',function(){
@@ -183,31 +183,54 @@ $(document).ready(function(){
 			$('#sch_corrects_info').hide();
 		}else{
 			$('##sch_corrects_info').show();
-		}				
+		}
 	});
 
-	
+
 	$('input').each(function(){
-	 	$(this).attr('autocomplete','off');	
+	 	$(this).attr('autocomplete','off');
 	});
-    
+
     $('.formClear').on('click',function(){
-    	
+
     	$('.docForm')[0].reset();
     	return false;
     });
 
     $('.saveDoc').on('click',function(){
-    	$.post(
-               'saveDoc',
-                $('.docForm').serialize(),
-                function(data){
-                	$('.modal-title').html('Сохранение документа')
-                	txt = (data === '1') ? '<p>Документ успешно сохранён': 'Для охранения документа необходимо авторизоваться!';
-                	$('.modal-body').html('<p>'+txt+'</p>');
-                	$('#infoModal').modal('show');
-                }
-              );
+        $.ajax(saveUrl ,{
+            type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                Accept: "aplication/json; charset=utf-8",
+                "Content-Type": "application/json; charset=utf-8"
+            },
+            cache: false,
+            data: $('.docForm').serialize(),
+            success : function(response) {
+                $('.modal-title').html('Сохранение документа')
+                $('.modal-body').html('<p>'+'Документ успешно сохранён'+'</p>');
+                $('#infoModal').modal('show');
+            },
+            error: function (response) {
+                console.log(response);
+                $('.modal-title').html('Сохранение документа')
+                $('.modal-body').html('<p>'+'Для охранения документа необходимо авторизоваться!'+'</p>');
+                $('#infoModal').modal('show');
+            }
+        });
+    	// $.post(
+        //        '/saveDoc',
+        //         $('.docForm').serialize(),
+        //         function(data, status, jqXHR){
+        //            console.log(data, status, jqXHR);
+        //
+        //         	$('.modal-title').html('Сохранение документа')
+        //         	txt = (data === '1') ? '<p>Документ успешно сохранён': 'Для охранения документа необходимо авторизоваться!';
+        //         	$('.modal-body').html('<p>'+txt+'</p>');
+        //         	$('#infoModal').modal('show');
+        //         }
+        //       );
               return false;
     });
 
@@ -218,7 +241,7 @@ $(document).ready(function(){
     		case 'hide':
     			$(el).hide();
     			console.log('hide');
-    		break;	
+    		break;
     		case 'show':
     			$(el).show();
     			console.log('show');
@@ -230,7 +253,7 @@ $(document).ready(function(){
     			$(hide).hide();
     		break;
     	}
-    	
+
 
     });
 
