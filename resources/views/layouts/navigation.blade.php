@@ -5,7 +5,9 @@
     <a href="{{ route('docs.index') }}" class="@if(request()->routeIs('docs.*')) active @endif list-group-item list-group-item-action">
         Документы
     </a>
-    <a href="#" class="list-group-item list-group-item-action">
-        Мои Документы
-    </a>
+    @auth
+        <a href="#" class="list-group-item list-group-item-action">
+            Мои Документы
+        </a>
+    @endauth
 </div>
