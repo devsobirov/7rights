@@ -81,7 +81,7 @@
         <main class="container py-4">
             <div class = "row">
                 <div class = "col-md-2">
-                    {!! $MyNavBar->asUl() !!}
+                    @include('layouts.navigation')
                 </div>
                 <div class = "col-md-10">
                     @yield('content')

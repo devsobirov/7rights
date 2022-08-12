@@ -175,7 +175,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        Lavary\Menu\ServiceProvider::class,
+        //Lavary\Menu\ServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         Meneses\LaravelMpdf\LaravelMpdfServiceProvider::class
 
@@ -232,7 +232,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
-        'Menu'      => Lavary\Menu\Facade::class,
+        //'Menu'      => Lavary\Menu\Facade::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'mPDF' => Meneses\LaravelMpdf\Facades\LaravelMpdf::class
 

@@ -6,6 +6,8 @@ use App\Models\Document;
 use Illuminate\Http\Request;
 use App\MainModel;
 use PDF;
+use PhpParser\Comment\Doc;
+
 class HomeController extends Controller
 {
     /**
@@ -43,20 +45,15 @@ class HomeController extends Controller
     {
         $doc = Document::getDocumentTplOrFail($id);
 
-        if (!$doc->form_template){
-            abort(404);
-        }
-        return view($doc->form_template, ['doc'=>$doc, 'doc_id'=>$id]);
+        return view($doc->template, ['doc'=>$doc, 'doc_id'=>$id]);
     }
     // отдать на загрузку.
     public function convertDoc(Request $request){
 
         if ($request->isMethod('post')) {
             $input = $request->all();
-            $doc = MainModel::getDocumentTpl($input['doc_id']);
-            if (!$doc->form_template){
-                abort(404);
-            }
+            $doc = Document::getDocumentTplOrFail($input['doc_id']);
+
             /*
             echo '<pre>';
             print_r($input);

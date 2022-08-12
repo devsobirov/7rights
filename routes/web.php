@@ -13,22 +13,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-/*
-Route::get('/', function () {
-    return view('welcome');
-});
-*/
 
-Route::get('/','HomeController@Index');
+Route::get('/','HomeController@Index')->name('homepage');
 Auth::routes();
 
 //Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/docs', 'HomeController@docs');
-// создание документа. 
-Route::get('/new/{id?}','HomeController@new');
-Route::post('/new/{id}', 'HomeController@convertDoc');
-Route::post('/daveDoc', 'HomeController@saveDoc');
+Route::get('/docs', 'HomeController@docs')->name('docs.index');
+// создание документа.
+Route::get('/new/{id?}','HomeController@new')->name('docs.new');
+Route::post('/new/{id}', 'HomeController@convertDoc')->name('docs.print');;
+Route::post('/daveDoc', 'HomeController@saveDoc')->name('docs.save');;
 
 Route::get('/edit/{id?}','HomeController@edit');
 Route::post('/edit/{id}', 'HomeController@edit');
