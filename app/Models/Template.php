@@ -31,4 +31,14 @@ class Template extends Model
         abort_if(!$doc->view_path, '404');
         return $doc;
     }
+
+    /**
+     *  Получает всех шаблонов для списка
+     *
+     * @return mixed
+     */
+    public static function getForList(): Collection
+    {
+        return self::select(['id', 'name'])->get();
+    }
 }

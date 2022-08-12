@@ -6,7 +6,7 @@
         Документы
     </a>
     @auth
-        <a href="#" class="list-group-item list-group-item-action">
+        <a href="{{ route('my-docs.index') }}" class="@if(request()->routeIs('my-docs.*')) active @endif list-group-item list-group-item-action">
             Мои Документы
         </a>
     @endauth

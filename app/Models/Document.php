@@ -10,6 +10,12 @@ class Document extends Model
 {
     protected $guarded = [];
 
+    protected $with = ['template:id,name,view_path'];
+
+    protected $casts = [
+        'data' => 'array'
+    ];
+
     public function user() : BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -17,7 +23,7 @@ class Document extends Model
 
     public function template(): BelongsTo
     {
-        return $this->belongsTo(Template::class, 'template_id');
+        return $this->belongsTo(Template::class, 'template_id')->withDefault();
     }
 
     public function scopeFilter($query)
@@ -25,16 +31,16 @@ class Document extends Model
         $template_id = request()->template_id;
         $created_at = request()->created_at;
 
-        $query->when(!empty($template), function ($query) use ($template_id) {
+        $query->when(!empty($template_id), function ($query) use ($template_id) {
            $query->where('template_id', $template_id);
         });
 
         $query->when(!empty($created_at), function ($query) use ($created_at) {
-           $day_month_year = explode($created_at, '-');
+           $year_month_day = explode('-', $created_at);
 
-           $query->whereDate('created_at', $day_month_year[0])
-               ->whereMonth('created_at', $day_month_year[1])
-               ->whereYear('created_at', $day_month_year[2]);
+           $query->whereDay('created_at', $year_month_day[2])
+               ->whereMonth('created_at', $year_month_day[1])
+               ->whereYear('created_at', $year_month_day[0]);
         });
     }
 }
