@@ -11,15 +11,15 @@ class DocsSeeder extends Seeder
         $docs = [
 			[
 				'name' => 'Счёт на оплату',
-				'form_template' => 'docstpl.schet-na-oplatu',
+				'template' => 'docstpl.schet-na-oplatu',
 			],
 			[
 				'name' => 'Универсальный передаточный документ',
-				'form_template' => 'docstpl.pd',
+				'template' => 'docstpl.pd',
 			],
 			[
 				'name' => 'Счёт-фактура',
-				'form_template' => 'docstpl.schf',
+				'template' => 'docstpl.schf',
 			],
 			[
 				'name' => 'Товарная накладная',
@@ -27,11 +27,11 @@ class DocsSeeder extends Seeder
 			],
 			[
 				'name' => 'Доверенность (ТМЦ)',
-				'form_template' => 'docstpl.dovtmc',
+				'template' => 'docstpl.dovtmc',
 			],
 			[
 				'name' => 'Корректировочный счёт-фактура',
-				'form_template' => 'docstpl.corschf',
+				'template' => 'docstpl.corschf',
 			]
 		];
 
