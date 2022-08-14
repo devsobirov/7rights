@@ -51,7 +51,8 @@
                     <td>{{ $document->created_at->format('d-M-Y H:i') }}</td>
                     <td class="text-right">
                         <a href="{{ route('my-docs.download', $document->id) }}" class="btn btn-success mx-1">Скачать</a>
-                        <a href="{{ route('my-docs.print', $document->id) }}" class="btn btn-warning mx-1">Печатать</a>
+                        <a href="{{ route('my-docs.edit', $document->id) }}" class="btn btn-warning mx-1">Редактировать</a>
+                        <a href="{{ route('my-docs.print', $document->id) }}" class="btn btn-info mx-1">Печатать</a>
                     </td>
                 </tr>
                 @empty

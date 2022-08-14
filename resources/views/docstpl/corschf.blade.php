@@ -1,9 +1,10 @@
-@extends('layouts.app') 
+@extends('layouts.app')
 @section('content')
+    @php $data = !empty($data) ? $data : []; @endphp
 <div class="card">
 	<div class="card-header"><strong>Редактирование документа: </strong> {{ $doc->name }}</div>
 	<div class="card-body">
-		<form method="POST" class="docForm"> 
+		<form method="POST" class="docForm" action="{{ route('docs.open', $doc_id) }}">
 			@csrf
 			<div class="row">
 				<!--<button class = "btn btn-primary formPutDemo">Заполнить демо</button>-->
@@ -11,7 +12,7 @@
 					<button class="btn btn-warning formClear">Очистить</button>
 				</div>
 				<input type="hidden" name="doc_id" value="{{$doc_id}}">
-				<input type="hidden" name="orientation_horizontal" value="2"> 
+				<input type="hidden" name="orientation_horizontal" value="2">
 			</div>
 			<hr>
 			<div class="form-group row">
@@ -184,25 +185,25 @@
 					<div class="form-group row">
 						<label for="pok_name" class="col-sm-2 col-form-label">Наименование</label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control" id="pok_name" placeholder="ООО Цветоек" name = "pok_name"> 
+							<input type="text" class="form-control" id="pok_name" placeholder="ООО Цветоек" name = "pok_name">
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="pok_inn" class="col-sm-2 col-form-label">ИНН</label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control" id="pok_inn" placeholder="1234567890" name = "pok_inn"> 
+							<input type="text" class="form-control" id="pok_inn" placeholder="1234567890" name = "pok_inn">
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="pok_kpp" class="col-sm-2 col-form-label">КПП</label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control" id="pok_kpp" placeholder="0987654321" name = "pok_kpp"> 
+							<input type="text" class="form-control" id="pok_kpp" placeholder="0987654321" name = "pok_kpp">
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="pok_adress" class="col-sm-2 col-form-label">Адрес</label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control" id="pok_adress" placeholder="Адрес" name = "pok_adress"> 
+							<input type="text" class="form-control" id="pok_adress" placeholder="Адрес" name = "pok_adress">
 						</div>
 					</div>
 				</div>

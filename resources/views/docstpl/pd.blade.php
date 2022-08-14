@@ -1,10 +1,11 @@
 @extends('layouts.app')
 @section('content')
+    @php $data = !empty($data) ? $data : []; @endphp
 <div class="card">
 	<div class="card-header"><strong>Редактирование документа: </strong>{{$doc->name}}</div>
-	
-	<form method = "POST" class = "docForm">
-	
+
+	<form method = "POST" class = "docForm" action="{{ route('docs.open', $doc_id) }}">
+
 		@csrf
 		<div class = "row">
 			<!--<button class = "btn btn-primary formPutDemo">Заполнить демо</button>-->
@@ -70,7 +71,7 @@
 				</divv>
 				<div class="col">
 						<label for="sch-date">От</label>
-						<input type="text" class="form-control dateForm" placeholder="21.06.2022" name = "sch_corrects_date" id="sch-corrects-date"> 
+						<input type="text" class="form-control dateForm" placeholder="21.06.2022" name = "sch_corrects_date" id="sch-corrects-date">
 				</div>
 			</div>
 			<hr>
@@ -80,7 +81,7 @@
 					<select class = "form-control" name = "sch_doc_type">
 						<option value = "1">Счёт-фактура и передаточный документ (акт)</option>
 						<option value = "2">Передаточный документ (акт)</option>
-					</select> 
+					</select>
 				</div>
 			</div>
 			<hr>

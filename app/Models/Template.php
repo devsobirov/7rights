@@ -28,7 +28,7 @@ class Template extends Model
     public static function getTemplateOrFail($id)
     {
         $doc = self::findOrFail($id);
-        abort_if(!$doc->view_path, '404');
+        abort_if(!$doc->view_path, '404', 'Отсуствует шаблон для данного документа');
         return $doc;
     }
 

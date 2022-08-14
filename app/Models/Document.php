@@ -43,4 +43,11 @@ class Document extends Model
                ->whereYear('created_at', $year_month_day[0]);
         });
     }
+
+    public function dataAsArray(): array
+    {
+        if (is_array($this->data)) return $this->data;
+        return json_decode($this->data, true);
+    }
+
 }

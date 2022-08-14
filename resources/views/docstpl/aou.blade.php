@@ -1,9 +1,10 @@
 @extends('layouts.app')
 @section('content')
+    @php $data = !empty($data) ? $data : []; @endphp
 <div class="card">
 	<div class="card-header"><strong>Редактирование документа: </strong>{{$doc->name}}</div>
 
-	<form method = "POST" class = "docForm">
+	<form method = "POST" class = "docForm" action="{{ route('docs.open', $doc_id) }}">
 
 		@csrf
 		<div class = "row">

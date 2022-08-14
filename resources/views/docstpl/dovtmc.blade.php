@@ -1,10 +1,11 @@
 @extends('layouts.app')
 @section('content')
+    @php $data = !empty($data) ? $data : []; @endphp
 <div class="card">
 	<div class="card-header"><strong>Редактирование документа: </strong> Доверенность на получение товарно-материальных ценностей</div>
 	<div class="card-body">
-		<form method = "POST" class = "docForm">
-		
+		<form method = "POST" class = "docForm" action="{{ route('docs.open', $doc_id) }}">
+
 			@csrf
 			<div class = "row">
 				<!--<button class = "btn btn-primary formPutDemo">Заполнить демо</button>-->
@@ -45,7 +46,7 @@
 			</div>
 			<hr>
 			<div class = "row">
-				
+
 				<div class = "col">
 					<h3>Лицо, получившее доверенность</h3>
 					<div class="form-group row">
@@ -75,7 +76,7 @@
 						</div>
 					</div>
 				</div>
-				
+
 
 			</div>
 			<hr>

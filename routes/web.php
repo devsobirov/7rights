@@ -28,6 +28,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/save', 'DocumentsController@save')->name('docs.save');
 
     Route::get('/my-documents', 'MyDocumentsController@index')->name('my-docs.index');
+    Route::get('/my-documents/edit/{document}', 'MyDocumentsController@edit')
+        ->name('my-docs.edit');
     Route::get('/my-documents/print/{document}', 'MyDocumentsController@print')
         ->name('my-docs.print');
     Route::get('/my-documents/download/{document}', 'MyDocumentsController@download')
