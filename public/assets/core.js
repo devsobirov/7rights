@@ -209,29 +209,46 @@ $(document).ready(function(){
             data: $('.docForm').serialize(),
             success : function(response) {
                 $('.modal-title').html('Сохранение документа')
-                $('.modal-body').html('<p>'+'Документ успешно сохранён'+'</p>');
+                $('.modal-body').html('<p>'+'Новый документ успешно сохранён'+'</p>');
                 $('#infoModal').modal('show');
             },
             error: function (response) {
                 console.log(response);
                 $('.modal-title').html('Сохранение документа')
-                $('.modal-body').html('<p>'+'Для охранения документа необходимо авторизоваться!'+'</p>');
+                $('.modal-body').html('<p>'+'Для сохранения документа необходимо авторизоваться!'+'</p>');
                 $('#infoModal').modal('show');
             }
         });
-    	// $.post(
-        //        '/saveDoc',
-        //         $('.docForm').serialize(),
-        //         function(data, status, jqXHR){
-        //            console.log(data, status, jqXHR);
-        //
-        //         	$('.modal-title').html('Сохранение документа')
-        //         	txt = (data === '1') ? '<p>Документ успешно сохранён': 'Для охранения документа необходимо авторизоваться!';
-        //         	$('.modal-body').html('<p>'+txt+'</p>');
-        //         	$('#infoModal').modal('show');
-        //         }
-        //       );
               return false;
+    });
+
+    $('.updateDoc').on('click',function(){
+        $.ajax(updateUrl ,{
+            type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                Accept: "aplication/json; charset=utf-8",
+                "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
+            },
+            cache: false,
+            data: $('.docForm').serialize(),
+            success : function(response) {
+                console.log(response)
+                $('.modal-title').html('Обновление документа')
+                $('.modal-body').html('<p>'+'Документ успешно обновлён. <br> Страница будет автоматически обновится.'+'</p>');
+                $('#infoModal').modal('show');
+                setTimeout(function () {
+                    window.location.reload();
+                }, 600)
+            },
+            error: function (response) {
+                console.log(response);
+                $('.modal-title').html('Обновление документа')
+                $('.modal-body').html('<p>'+'Произошла неизвестная ошибка!'+'</p>');
+                $('#infoModal').modal('show');
+            }
+        });
+        return false;
     });
 
     $('.showHideEl').change(function(){

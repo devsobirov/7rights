@@ -9,11 +9,12 @@
 		@csrf
 		<div class = "row">
 			<!--<button class = "btn btn-primary formPutDemo">Заполнить демо</button>-->
-			<div class="col text-right px-3">
-				<button class = "btn btn-warning formClear">Очистить</button>
+			<div class="col text-right p-3">
+				<button class = "btn btn-warning mr-3 formClear">Очистить</button>
 			</div>
 		</div>
 		<input type = "hidden" name = "doc_id" value = "{{$doc_id}}">
+		<input type = "hidden" name = "editable_id" value = "{{!empty($editable_id) ? $editable_id : null}}">
 		<div class="card-body">
 			<div class="form-group row">
 				<div class="col">
@@ -46,15 +47,20 @@
 		<hr>
 			@include('edit.dopinfo');
 		<hr>
-		<div class="row">
-			<div class="col">
-				<button class="btn btn-primary saveDoc">Сохранить</button>
-			</div>
+		<div class="row p-2">
+            <div class="col">
+            @if(request()->routeIs('my-docs.edit'))
+                <button class="btn btn-primary mx-1 updateDoc">Обновить</button>
+				<button class="btn btn-primary mx-1 saveDoc">Сохранить как новый</button>
+            @else
+                <button class="btn btn-primary saveDoc">Сохранить</button>
+            @endif
+            </div>
+
 			<div class="col text-right">
 				<button class="btn btn-primary">Печать</button>
 			</div>
 		</div>
-</div>
 </form>
 </div>
  @endsection

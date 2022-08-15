@@ -120,6 +120,7 @@
 <script>
     let userId = "{{ auth()->id() }}";
     let saveUrl = "{{ route('docs.save') }}";
+    let updateUrl = "{{ route('my-docs.update') }}";
 </script>
 <script src="{{ asset('assets/core.js') }}"></script>
 </html>

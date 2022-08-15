@@ -29,7 +29,25 @@ class MyDocumentsController extends BaseController
 
         return view($template->view_path)->with(['doc' => $template])
             ->with([ 'doc_id' => $template->id])
-            ->with(['data' => $document->dataAsArray()]);
+            ->with(['data' => $document->dataAsArray()])
+            ->with(['editable_id' => $document->id]);
+    }
+
+
+    public function update(Request $request)
+    {
+        $document = Document::findOrFail($request->post('editable_id'));
+        abort_if($document->user_id != auth()->id(), 403);
+
+        $decodedData = Utils::jsonEncode($request->except('_token'));
+        $result = $document->update(['data' => $decodedData]);
+
+        if ($result) {
+            return response()->json(['data' => $document], 201, [
+                'Content-Type' => 'application/json'
+            ]);
+        }
+        return response()->json(['data' => 'Error occurred'], 500);
     }
 
     public function print(Document $document)

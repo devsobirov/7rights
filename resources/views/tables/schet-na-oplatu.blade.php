@@ -22,7 +22,7 @@
 							</tr>
 						</thead>
 						<tbody id = "gruzList">
-                            @foreach($table as $row)
+                            @forelse($table as $row)
                                 @php
                                     $gruzSum = round(intval(get_if_key_exists($row, 'gruzCount')) * floatval(get_if_key_exists($row, 'gruzPrice')), 2);
                                      $gruzTotalSum += $gruzSum;
@@ -36,22 +36,24 @@
                                     <td class = "gruzSumm">{{$gruzSum}}</td>
                                     <td><a class = "delRow"><i class="fa-solid fa-trash"></i></a></td>
                                 </tr>
-                            @endforeach
+                            @empty
+
+                                <tr>
+                                    <td class = "gruzRowCnt">{{ $nextRow }}</td>
+                                    <td><input type = "text" name = "table[{{ $nextRow }}][gruzName]" class = "gruzName[{{$nextRow}}]"></td>
+                                    <td><input type = "text" name  = "table[{{ $nextRow }}][edIzm]" class = "edIzm"></td>
+                                    <td><input type = "number" name = "table[{{ $nextRow }}][gruzCount]" data-calc = "true" class = "gruzCount"></td>
+                                    <td><input type = "number" name = "table[{{ $nextRow }}][gruzPrice]"  data-calc = "true" class = "gruzPrice"></td>
+                                    <td class = "gruzSumm"></td>
+                                    <td><a class = "delRow"><i class="fa-solid fa-trash"></i></a></td>
+                                </tr>
+                            @endforelse
 							<tr id = "toAppend" style = "display:none;">
 								<td class = "gruzRowCnt"></td>
 								<td><input type = "text" name = "gruzName"  class = "gruzName"></td>
 								<td><input type = "text" name = "edIzm" class = "edIzm"></td>
 								<td><input type = "number" name = "gruzCount" data-calc = "true"  class = "gruzCount"></td>
 								<td><input type = "number" name = "gruzPrice" data-calc = "true" class = "gruzPrice"></td>
-								<td class = "gruzSumm"></td>
-								<td><a class = "delRow"><i class="fa-solid fa-trash"></i></a></td>
-							</tr>
-							<tr>
-								<td class = "gruzRowCnt">{{ $nextRow }}</td>
-								<td><input type = "text" name = "table[{{ $nextRow }}][gruzName]" class = "gruzName[{{$nextRow}}]"></td>
-								<td><input type = "text" name  = "table[{{ $nextRow }}][edIzm]" class = "edIzm"></td>
-								<td><input type = "number" name = "table[{{ $nextRow }}][gruzCount]" data-calc = "true" class = "gruzCount"></td>
-								<td><input type = "number" name = "table[{{ $nextRow }}][gruzPrice]"  data-calc = "true" class = "gruzPrice"></td>
 								<td class = "gruzSumm"></td>
 								<td><a class = "delRow"><i class="fa-solid fa-trash"></i></a></td>
 							</tr>

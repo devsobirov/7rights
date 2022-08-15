@@ -3,11 +3,31 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\DocumentHelper;
+use App\Models\Document;
 use Barryvdh\DomPDF\Facade\Pdf;
+use GuzzleHttp\Utils;
 use Illuminate\Http\Request;
 
 abstract class BaseDocumentController extends Controller
 {
+
+    protected function createNew(Request $request)
+    {
+        $decodedData = Utils::jsonEncode($request->except('_token'));
+
+        $document = Document::create([
+            'template_id' => $request->post('doc_id'),
+            'user_id' => auth()->id(),
+            'data' => $decodedData
+        ]);
+
+        if ($document) {
+            return response()->json(['data' => $document], 201, [
+                'Content-Type' => 'application/json'
+            ]);
+        }
+        return response()->json(['data' => 'Error occurred'], 500);
+    }
 
     protected function generatePdf($template, $input)
     {

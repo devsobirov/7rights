@@ -36,19 +36,6 @@ class DocumentsController extends BaseController
 
     public function save(Request $request)
     {
-        $decodedData = Utils::jsonEncode($request->except('_token'));
-
-        $document = Document::create([
-            'template_id' => $request->post('doc_id'),
-            'user_id' => auth()->id(),
-            'data' => $decodedData
-        ]);
-
-        if ($document) {
-            return response()->json(['data' => $document], 201, [
-                'Content-Type' => 'application/json'
-            ]);
-        }
-        return response()->json(['data' => 'Error occurred'], 500);
+        return $this->createNew($request);
     }
 }
