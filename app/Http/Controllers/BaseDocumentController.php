@@ -56,10 +56,12 @@ abstract class BaseDocumentController extends Controller
         //$d_a[1] = 'test2';
 
 
+
         // PDF
         $pdf = !isset($input['orientation_horizontal']) ?
             PDF::loadView('blanks.'.$d_a[1], $input) :
-            PDF::loadView('blanks.'.$d_a[1], $input,[],['format'=>'A4-L', 'display_mode'=>'fullpage', 'orientation' => 'L']);
+            PDF::loadView('blanks.'.$d_a[1], $input)->setPaper('A4', 'landscape');
+        //['format'=>'A4-L', 'display_mode'=>'fullpage', 'orientation' => 'L']
 
         return $pdf;
     }
