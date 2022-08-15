@@ -59,15 +59,15 @@
 									<div class="col-sm-10">
                                         @php $nds_calc =  get_if_key_exists($data, 'nds_calc') @endphp
 										<div class="form-check">
-											<input class="form-check-input" type="radio" name="nds_calc" id="gridRadios1" value="none" @if(!in_array($nds_calc, ['gridRadios2','gridRadios3'])) checked @endif>
+											<input class="form-check-input" type="radio" name="nds_calc" id="gridRadios1" value="none" @if(!in_array($nds_calc, ['summ','up'])) checked @endif>
 											<label class="form-check-label" for="gridRadios1"> Не учитывать </label>
 										</div>
 										<div class="form-check">
-											<input class="form-check-input" type="radio" @if($nds_calc == 'gridRadios2') checked @endif  name="nds_calc" id="gridRadios2" value="summ">
+											<input class="form-check-input" type="radio" @if($nds_calc == 'sum') checked @endif  name="nds_calc" id="gridRadios2" value="summ">
 											<label class="form-check-label" for="gridRadios2"> В сумме </label>
 										</div>
 										<div class="form-check">
-											<input class="form-check-input" type="radio" @if($nds_calc == 'gridRadios3') checked @endif name="nds_calc" id="gridRadios3" value="up">
+											<input class="form-check-input" type="radio" @if($nds_calc == 'up') checked @endif name="nds_calc" id="gridRadios3" value="up">
 											<label class="form-check-label" for="gridRadios3"> Сверху </label>
 										</div>
 									</div>
