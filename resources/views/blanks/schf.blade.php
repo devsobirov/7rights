@@ -1,7 +1,12 @@
 <html>
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <title>Счёт-фактура</title>
-<style>
+<style type="text/css">
+        /*font-family: */
+        /*font-family: arial;*/
+        /*"DejaVu Sans", sans-serif*/
+        * {font-family: "DejaVu Sans", sans-serif;font-size: 12px;/*line-height: 14px;*/}
 	table{
 		border-spacing: 0px; border-collapse: collapse;
 		empty-cells: show;
@@ -25,11 +30,11 @@
 				$corr_num =  '--';
 			@endphp
 		@endif
-		<td style = "width:80%;">
+		<td style = "width:70%;">
 			<h3>СЧЕТ-ФАКТУРА № {{ $sch_number }} ОТ {{ $sch_date }}<br>
 			ИСПРАВЛЕНИЕ № {{ $corr_num }} ОТ {{ $corr_date }}</h3>
 		</td>
-		<td style = " width: 20%; text-align: right; font-size: 12px;">
+		<td style = " width: 30%; text-align: right; font-size: 12px;">
 			ПРИЛОЖЕНИЕ № 1 к постановлению Правительства
 			Российской Федерации от 26 декабря 2011 г. № 1137
 			(в ред. Постановления Правительства РФ от 02.04.2021 № 534)
@@ -44,9 +49,9 @@
 		<td colspan = "2">ИНН/КПП продава: {{ ($sch_orgtype == 'org') ? $org_inn.'/'.$org_kpp : $ip_inn.'/'.$ip_kpp }}</td>
 	</tr>
 	<tr>
-		<td colspan = "2">Грузоотправитель и его адрес:  
+		<td colspan = "2">Грузоотправитель и его адрес:
 			@if ($gruzotp_who == 'he')
-				Он же 
+				Он же
 			@elseif ($gruzotp_who == 'some')
 				{{$gruzotp_some_name}}, {{$gruzotp_some_adress}}
 			@else
@@ -55,9 +60,9 @@
 		</td>
 	</tr>
 	<tr>
-		<td colspan = "2">Грузополучатель и его адрес: 
+		<td colspan = "2">Грузополучатель и его адрес:
 			@if ($gruzpol_who == 'he')
-				Он же 
+				Он же
 			@elseif ($gruzpol_who == 'some')
 				{{$gruzpol_some_name}}, {{$gruzpol_some_adress}}
 			@else
@@ -66,7 +71,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td colspan = "2">К платёжно-расчетному документу: 
+		<td colspan = "2">К платёжно-расчетному документу:
 		@foreach ($plat as $t)
 			№ {{$t['number']}} от {{$t['date']}}
 		@endforeach
@@ -91,7 +96,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td colspan = "2">Валюта: наименование: код: 
+		<td colspan = "2">Валюта: наименование: код:
 			@if ($wallet == 'rub')
 				Российский рубль, 643
 			@elseif ($wallet == 'usd')
@@ -154,9 +159,9 @@
 
 
 		@endphp
-		
+
 		@foreach ($tovs as $t)
-		
+
 		<tr>
 			<td>{{ $loop->iteration-1 }}</td>
 			<td>{{ $t['Naim'] }}</td>
@@ -213,7 +218,7 @@
 		<td style = "font-size: 12px; text-align: center;"><sup>(подпись</sup></td>)
 		<td style = "font-size: 12px; text-align: center;"><sup>(ф.и.о)</sup></td>
 	</tr>
-	
+
 	<tr>
 		<td style = "width: 20%;">Индивидуальный предприниматель или иное уполномоченное лицо</td>
 		<td style = "width: 10%; border-bottom: 1p solid #000;"></td>
