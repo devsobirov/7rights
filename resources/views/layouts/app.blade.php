@@ -122,5 +122,5 @@
     let saveUrl = "{{ route('docs.save') }}";
     let updateUrl = "{{ route('my-docs.update') }}";
 </script>
-<script src="{{ asset('assets/core.js') }}"></script>
+<script src="{{ asset('assets/core.js') }}?ver={{time()}}"></script>
 </html>
