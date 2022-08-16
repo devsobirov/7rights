@@ -13,7 +13,7 @@
 				</div>
 				<input type="hidden" name="doc_id" value="{{$doc_id}}">
 				<input type="hidden" name="orientation_horizontal" value="2"> </div>
-            <input type = "hidden" name = "editable_id" value = "{{!empty($editable_id) ? $editable_id : null}}">
+                <input type = "hidden" name = "editable_id" value = "{{!empty($editable_id) ? $editable_id : null}}">
 			<hr>
 			<div class="form-group row">
 				<dov class="col">
