@@ -26,7 +26,8 @@
 			<hr>
 			<div class="row">
 				<div class="col">
-                    @php $corrects = (get_if_key_exists($data, 'sch_number') == 'yes')@endphp
+                    @php $corrects = (get_if_key_exists($data, 'corrects') == 'yes')@endphp
+
 					<h3>Исправления</h3>
 					<div class="form-check form-check-inline">
 						<input class="form-check-input showHideEl" type="radio" id="corrects_no" name="corrects" value="no" data-el="#corrects-number-date"
@@ -40,7 +41,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="form-group row" id="corrects-number-date" style="display:none;">
+			<div class="form-group row" id="corrects-number-date" @if(!$corrects) style="display:none;" @endif>
 				<dov class="col">
 					<label for="sch-number">Исправление №</label>
 					<input type="text" class="form-control" placeholder="11" value="{{ get_if_key_exists($data, 'sch_corrects_nuber') }}" name="sch_corrects_nuber" id="sch-number"> </dov>
@@ -203,11 +204,11 @@
 						<label for="sch-nds" class="col-sm-2 col-form-label">Ставка НДС</label>
 						<div class="col-sm-5">
 							<select id="sch-nd" name="nds" class="form-control">
-								<option @if($nds == 'none' || $nds) selected @endif value="none">Без НДС</option>
-								<option @if($nds == '0') selected @endif value="0">0%</option>
-								<option @if($nds == '10') selected @endif value="10">10%</option>
-								<option @if($nds == '13') selected @endif value="13">18%</option>
-								<option @if($nds == '20') selected @endif value="20">20%</option>
+								<option @if($nds == 'none' || is_null($nds)) selected @endif value="none">Без НДС</option>
+								<option @if($nds == 0) selected @endif value="0">0%</option>
+								<option @if($nds == 10) selected @endif value="10">10%</option>
+								<option @if($nds == 13) selected @endif value="13">18%</option>
+								<option @if($nds == 20) selected @endif value="20">20%</option>
 							</select>
 						</div>
                         <div class="col-sm-5">

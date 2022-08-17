@@ -19,8 +19,8 @@
                 <tbody class = "tableBody">
                 <tr class = "clone" style = "display:none;">
                     <td class = "tblRowCount"></td>
-                    <td><input type = "text" name = "plat[0][number]"  data-id = "number"></td>
-                    <td><input type = "text" name = "plat[0][date]" class = "dateForm" data-id = "date"></td>
+                    <td><input type = "text" name = "number"  data-id = "number"></td>
+                    <td><input type = "text" name = "date" class = "dateForm" data-id = "date"></td>
                     <td><a class = "delRow"><i class="fa-solid fa-trash"></i></a></td>
                 </tr>
                     @forelse($plat as $row)
@@ -33,8 +33,8 @@
                     @empty
                     <tr>
                         <td class = "tblRowCount">1</td>
-                        <td><input type = "text" name = "plat[1][number]" data-id="number"></td>
-                        <td><input type = "text" name  = "plat[1][date]" data-id = "date" class = "dateForm"></td>
+                        <td><input type = "text" name = "plat[{{$nextRow}}][number]" data-id="number"></td>
+                        <td><input type = "text" name  = "plat[{{$nextRow}}][date]" data-id = "date" class = "dateForm"></td>
                         <td><a class = "delRow"><i class="fa-solid fa-trash"></i></a></td>
                     </tr>
                     @endforelse

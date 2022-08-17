@@ -43,16 +43,18 @@
 					</div>
 					<div class="form-group row">
 						<label for="sch-nds" class="col-sm-2 col-form-label">Ставка НДС</label>
+
 						<div class="col-sm-5">
                             @php $nds =  get_if_key_exists($data, 'nds') @endphp
 							<select id="sch-nd" name = "nds" class="form-control">
 								<option value="none">Без НДС</option>
-								<option value="0" @if($nds === '0') selected @endif>0%</option>
-								<option value="10" @if($nds === '10') selected @endif>10%</option>
-								<option value="13" @if($nds === '13') selected @endif>18%</option>
-								<option value="20" @if($nds === '20') selected @endif>20%</option>
+								<option value="0" @if($nds == 0) selected @endif>0%</option>
+								<option value="10" @if($nds == 10) selected @endif>10%</option>
+								<option value="13" @if($nds == 13) selected @endif>18%</option>
+								<option value="20" @if($nds == 20) selected @endif>20%</option>
 							</select>
 						</div>
+
 						<div class="col-sm-5">
 							<fieldset class="form-group">
 								<div class="row">
@@ -63,7 +65,7 @@
 											<label class="form-check-label" for="gridRadios1"> Не учитывать </label>
 										</div>
 										<div class="form-check">
-											<input class="form-check-input" type="radio" @if($nds_calc == 'sum') checked @endif  name="nds_calc" id="gridRadios2" value="summ">
+											<input class="form-check-input" type="radio" @if($nds_calc == 'summ') checked @endif  name="nds_calc" id="gridRadios2" value="summ">
 											<label class="form-check-label" for="gridRadios2"> В сумме </label>
 										</div>
 										<div class="form-check">
