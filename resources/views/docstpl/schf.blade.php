@@ -16,9 +16,9 @@
                 <input type = "hidden" name = "editable_id" value = "{{!empty($editable_id) ? $editable_id : null}}">
 			<hr>
 			<div class="form-group row">
-				<dov class="col">
+				<div class="col">
 					<label for="sch-number">Счёт-фактурау №</label>
-					<input type="text" class="form-control" placeholder="255" value="{{ get_if_key_exists($data, 'sch_number') }}" name="sch_number" id="sch-number"> </dov>
+					<input type="text" class="form-control" placeholder="255" value="{{ get_if_key_exists($data, 'sch_number') }}" name="sch_number" id="sch-number"> </div>
 				<div class="col">
 					<label for="sch-date">От</label>
 					<input type="text" class="form-control dateForm" placeholder="21.06.2022" value="{{ get_if_key_exists($data, 'sch_date') }}" name="sch_date" id="sch-date"> </div>
@@ -362,7 +362,7 @@
                 </div>
 
                 <div class="col text-right">
-                    <button class="btn btn-primary">Печать</button>
+                    <button type="button" class="btn btn-primary printDoc">Печать</button>
                 </div>
             </div>
 	</form>

@@ -251,6 +251,36 @@ $(document).ready(function(){
         return false;
     });
 
+    let printUrl = $('.docForm').attr('action');
+
+    $('.printDoc').on('click',function(){
+
+        $.ajax(printUrl ,{
+            type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+                "Accept": "application/pdf"
+            },
+            cache: false,
+            data: $('.docForm').serialize(),
+            success : function(response) {
+                console.log(response)
+                window.open("about:blank#data:application/octet-stream;base64," + response, '_blank').focus();
+                // w.document.open();
+                // w.document.write(data);
+                // w.document.close();
+            },
+            error: function (response) {
+                console.log(response);
+                $('.modal-title').html('Печать документа')
+                $('.modal-body').html('<p>'+'Произошла неизвестная ошибка при генерации документа !'+'</p>');
+                $('#infoModal').modal('show');
+            }
+        });
+        return false;
+    });
+
     $('.showHideEl').change(function(){
     	el =$(this).attr('data-el');
     	func = $(this).attr('data-func');
