@@ -112,19 +112,41 @@
 			</div>
 			<hr>
 			<div class="form-group row">
-				<dov class="col">
+				<div class="col">
 					<label for="sch_money_name">Наименование</label>
-					<input type="text" class="form-control" placeholder="RU" name = "sch_money_name" id="sch_money_name"> </dov>
+					<input type="text" class="form-control" placeholder="RU" name = "sch_money_name" id="sch_money_name"> </div>
 				<div class="col">
 					<label for="sch_money_code">От</label>
 					<input type="text" class="form-control" placeholder="Рубль" name = "sch_money_code" id="sch_money_code"> </div>
 			</div>
 			<hr>
 			@include('tables.prd');
-			<ht>
+			<hr>
 			@include('edit.seller-info');
 		</div>
-
+        <div class="row p-2">
+            @if(auth()->id())
+                @if(request()->routeIs('my-docs.edit'))
+                    <div class="col">
+                        <button class="btn btn-primary mx-1 updateDoc">Обновить</button>
+                        <button class="btn btn-primary mx-1 saveDoc">Сохранить как новый</button>
+                    </div>
+                    <div class="col text-right">
+                        <button class="btn btn-primary saveAndOpen">Обновить и печатать</button>
+                        <button class="btn btn-primary openTemporary">Печатать только изменения</button>
+                    </div>
+                @else
+                    <div class="col">
+                        <button class="btn btn-primary saveDoc">Сохранить</button>
+                    </div>
+                    <div class="col text-right">
+                        <button class="btn btn-primary saveAndOpen">Сохранить и печатать</button>
+                    </div>
+                @endif
+            @else
+                <div class="col text-center text-danger">Сохранение и печать документов доступно только для авторизованных пользователей</div>
+            @endif
+        </div>
 	</form>
 </div>
 @endsection

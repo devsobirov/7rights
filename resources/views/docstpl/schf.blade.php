@@ -352,18 +352,27 @@
 			<hr> @include('tables.schf2')
 			<hr>
             <div class="row p-2">
-                <div class="col">
+                @if(auth()->id())
                     @if(request()->routeIs('my-docs.edit'))
-                        <button class="btn btn-primary mx-1 updateDoc">Обновить</button>
-                        <button class="btn btn-primary mx-1 saveDoc">Сохранить как новый</button>
+                        <div class="col">
+                            <button class="btn btn-primary mx-1 updateDoc">Обновить</button>
+                            <button class="btn btn-primary mx-1 saveDoc">Сохранить как новый</button>
+                        </div>
+                        <div class="col text-right">
+                            <button class="btn btn-primary saveAndOpen">Обновить и печатать</button>
+                            <button class="btn btn-primary openTemporary">Печатать только изменения</button>
+                        </div>
                     @else
-                        <button class="btn btn-primary saveDoc">Сохранить</button>
+                        <div class="col">
+                            <button class="btn btn-primary saveDoc">Сохранить</button>
+                        </div>
+                        <div class="col text-right">
+                            <button class="btn btn-primary saveAndOpen">Сохранить и печатать</button>
+                        </div>
                     @endif
-                </div>
-
-                <div class="col text-right">
-                    <button type="button" class="btn btn-primary printDoc">Печать</button>
-                </div>
+                @else
+                    <div class="col text-center text-danger">Сохранение и печать документов доступно только для авторизованных пользователей</div>
+                @endif
             </div>
 	</form>
 </div>

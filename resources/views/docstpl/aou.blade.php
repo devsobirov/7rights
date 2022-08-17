@@ -138,14 +138,29 @@
 		<hr>
 			@include('edit.dopinfo');
 		<hr>
-		<div class="row">
-			<div class="col">
-				<button class="btn btn-primary saveDoc">Сохранить</button>
-			</div>
-			<div class="col text-right">
-				<button class="btn btn-primary">Печать</button>
-			</div>
-		</div>
+        <div class="row p-2">
+            @if(auth()->id())
+                @if(request()->routeIs('my-docs.edit'))
+                    <div class="col">
+                        <button class="btn btn-primary mx-1 updateDoc">Обновить</button>
+                        <button class="btn btn-primary mx-1 saveDoc">Сохранить как новый</button>
+                    </div>
+                    <div class="col text-right">
+                        <button class="btn btn-primary saveAndOpen">Обновить и печатать</button>
+                        <button class="btn btn-primary openTemporary">Печатать только изменения</button>
+                    </div>
+                @else
+                    <div class="col">
+                        <button class="btn btn-primary saveDoc">Сохранить</button>
+                    </div>
+                    <div class="col text-right">
+                        <button class="btn btn-primary saveAndOpen">Сохранить и печатать</button>
+                    </div>
+                @endif
+            @else
+                <div class="col text-center text-danger">Сохранение и печать документов доступно только для авторизованных пользователей</div>
+            @endif
+        </div>
 
 </form>
 </div>
