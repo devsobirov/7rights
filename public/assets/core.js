@@ -209,8 +209,11 @@ $(document).ready(function(){
             data: $('.docForm').serialize(),
             success : function(response) {
                 $('.modal-title').html('Сохранение документа')
-                $('.modal-body').html('<p>'+'Новый документ успешно сохранён'+'</p>');
+                $('.modal-body').html('<p>'+'Новый документ успешно сохранён <br> Сейчас выполниться автоматический переход на страницу редактирования обновится.'+'</p>');
                 $('#infoModal').modal('show');
+                setTimeout(function () {
+                    window.location.href = response.link;
+                }, 600)
             },
             error: function (response) {
                 console.log(response);
@@ -220,6 +223,36 @@ $(document).ready(function(){
             }
         });
               return false;
+    });
+
+    $('.saveAndOpen').on('click',function(){
+        $.ajax(saveAndOpenUrl ,{
+            type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                Accept: "aplication/json; charset=utf-8",
+                "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
+            },
+            cache: false,
+            data: $('.docForm').serialize(),
+            success : function(response) {
+                $('.modal-title').html('Сохранение документа')
+                $('.modal-body').html('<p>'+'Новый документ успешно сохранён <br> Сейчас выполниться автоматический переход на страницу редактирования и печати.'+'</p>');
+                $('#infoModal').modal('show');
+                //console.log(response, response.print_link, response.edit_link); return false;
+                setTimeout(function () {
+                    window.open(response.print_link, '_blank');
+                    window.location.href = response.edit_link;
+                }, 600)
+            },
+            error: function (response) {
+                console.log(response);
+                $('.modal-title').html('Сохранение документа')
+                $('.modal-body').html('<p>'+'Произлшла ошибка при сохранении документа!'+'</p>');
+                $('#infoModal').modal('show');
+            }
+        });
+        return false;
     });
 
     $('.updateDoc').on('click',function(){

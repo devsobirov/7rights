@@ -36,6 +36,15 @@ class DocumentsController extends BaseController
 
     public function save(Request $request)
     {
-        return $this->createNew($request);
+        $document =  $this->createNew($request);
+        $editLink = route('my-docs.edit', $document->id);
+
+        if ($document) {
+            return response()->json(
+                ['data' => $document, 'link' => $editLink],201,
+                ['Content-Type' => 'application/json']
+            );
+        }
+        return response()->json(['data' => 'Error occurred'], 500);
     }
 }

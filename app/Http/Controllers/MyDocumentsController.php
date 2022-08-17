@@ -50,11 +50,42 @@ class MyDocumentsController extends BaseController
         return response()->json(['data' => 'Error occurred'], 500);
     }
 
+    public function saveAndOpen(Request $request, $id = null)
+    {
+        if ($id) {
+            $document = Document::findOrFail($id);
+            abort_if($document->user_id != auth()->id(), 403);
+            $decodedData = Utils::jsonEncode($request->except('_token'));
+            $result = $document->update(['data' => $decodedData]);
+            abort_if(!$result, 500);
+        }  else {
+            $document = $this->createNew($request);
+            abort_if(!$document, 500);
+        }
+
+        $edit_link = route('my-docs.edit', $document->id);
+        $print_link = route('my-docs.print', $document->id);
+
+        return response()->json([
+            'data' => $document,
+            'edit_link' => $edit_link,
+            'print_link' => $print_link
+        ]);
+    }
+
     public function print(Document $document)
     {
         $pdf = $this->getPdfIfAllowed($document);
 
         return $pdf->stream('my_pdf.pdf');
+    }
+
+    public function temporary(Document $document)
+    {
+        $pdf = $this->getPdfIfAllowed($document);
+        $document->delete();
+
+        return $pdf->stream('temporary.pdf');
     }
 
     public function download(Document $document)

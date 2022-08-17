@@ -22,16 +22,19 @@ Route::get('/','HomeController@Index')->name('homepage');
 
 Route::get('/docs', 'DocumentsController@index')->name('docs.index');
 Route::get('/open/{id}','DocumentsController@create')->name('docs.create');
-Route::post('/open/{id}', 'DocumentsController@open')->name('docs.open');;
+Route::post('/open/{id}', 'DocumentsController@open')->name('docs.open');
 
 Route::middleware(['auth'])->prefix('my-documents')->group(function () {
-    Route::post('/save', 'DocumentsController@save')->name('docs.save');
 
     Route::get('/', 'MyDocumentsController@index')->name('my-docs.index');
     Route::get('edit/{document}', 'MyDocumentsController@edit')->name('my-docs.edit');
-    Route::post('update', 'MyDocumentsController@update')->name('my-docs.update');
+    Route::get('temporary/{document}', 'MyDocumentsController@edit')->name('my-docs.temporary');
     Route::get('print/{document}', 'MyDocumentsController@print')->name('my-docs.print');
     Route::get('download/{document}', 'MyDocumentsController@download')->name('my-docs.download');
+
+    Route::post('/save', 'DocumentsController@save')->name('docs.save');
+    Route::post('/saveAndOpen/{id?}', 'MyDocumentsController@saveAndOpen')->name('my-docs.save-and-open');
+    Route::post('update', 'MyDocumentsController@update')->name('my-docs.update');
 });
 
 Route::get('/edit/{id?}','HomeController@edit');
