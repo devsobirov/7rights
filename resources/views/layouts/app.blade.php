@@ -121,6 +121,7 @@
     let userId = "{{ auth()->id() }}";
     let saveUrl = "{{ route('docs.save') }}";
     let saveAndOpenUrl = "{{ route('my-docs.save-and-open') }}"
+    let openTemporaryUrl = "{{ route('my-docs.open-temporary') }}"
     let updateUrl = "{{ route('my-docs.update') }}";
 </script>
 <script src="{{ asset('assets/core.js') }}?ver={{time()}}"></script>

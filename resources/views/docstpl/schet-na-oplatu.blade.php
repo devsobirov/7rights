@@ -56,7 +56,7 @@
                     </div>
                     <div class="col text-right">
                         <button class="btn btn-primary saveAndOpen">Обновить и печатать</button>
-                        <button class="btn btn-primary">Печатать только изменения</button>
+                        <button class="btn btn-primary openTemporary">Печатать только изменения</button>
                     </div>
                 @else
                     <div class="col">

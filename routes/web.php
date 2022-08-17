@@ -28,12 +28,13 @@ Route::middleware(['auth'])->prefix('my-documents')->group(function () {
 
     Route::get('/', 'MyDocumentsController@index')->name('my-docs.index');
     Route::get('edit/{document}', 'MyDocumentsController@edit')->name('my-docs.edit');
-    Route::get('temporary/{document}', 'MyDocumentsController@edit')->name('my-docs.temporary');
+    Route::get('temporary/{document}', 'MyDocumentsController@temporary')->name('my-docs.temporary');
     Route::get('print/{document}', 'MyDocumentsController@print')->name('my-docs.print');
     Route::get('download/{document}', 'MyDocumentsController@download')->name('my-docs.download');
 
     Route::post('/save', 'DocumentsController@save')->name('docs.save');
     Route::post('/saveAndOpen/{id?}', 'MyDocumentsController@saveAndOpen')->name('my-docs.save-and-open');
+    Route::post('/temporary', 'MyDocumentsController@openTemporary')->name('my-docs.open-temporary');
     Route::post('update', 'MyDocumentsController@update')->name('my-docs.update');
 });
 

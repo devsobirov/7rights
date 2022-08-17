@@ -225,6 +225,35 @@ $(document).ready(function(){
               return false;
     });
 
+    $('.updateDoc').on('click',function(){
+        $.ajax(updateUrl ,{
+            type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                Accept: "aplication/json; charset=utf-8",
+                "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
+            },
+            cache: false,
+            data: $('.docForm').serialize(),
+            success : function(response) {
+                console.log(response)
+                $('.modal-title').html('Обновление документа')
+                $('.modal-body').html('<p>'+'Документ успешно обновлён. <br> Страница будет автоматически обновится.'+'</p>');
+                $('#infoModal').modal('show');
+                setTimeout(function () {
+                    window.location.reload();
+                }, 600)
+            },
+            error: function (response) {
+                console.log(response);
+                $('.modal-title').html('Обновление документа')
+                $('.modal-body').html('<p>'+'Произошла неизвестная ошибка!'+'</p>');
+                $('#infoModal').modal('show');
+            }
+        });
+        return false;
+    });
+
     $('.saveAndOpen').on('click',function(){
         $.ajax(saveAndOpenUrl ,{
             type: 'POST',
@@ -255,8 +284,8 @@ $(document).ready(function(){
         return false;
     });
 
-    $('.updateDoc').on('click',function(){
-        $.ajax(updateUrl ,{
+    $('.openTemporary').on('click',function(){
+        $.ajax(openTemporaryUrl ,{
             type: 'POST',
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
@@ -266,48 +295,13 @@ $(document).ready(function(){
             cache: false,
             data: $('.docForm').serialize(),
             success : function(response) {
-                console.log(response)
-                $('.modal-title').html('Обновление документа')
-                $('.modal-body').html('<p>'+'Документ успешно обновлён. <br> Страница будет автоматически обновится.'+'</p>');
-                $('#infoModal').modal('show');
-                setTimeout(function () {
-                    window.location.reload();
-                }, 600)
-            },
-            error: function (response) {
-                console.log(response);
-                $('.modal-title').html('Обновление документа')
-                $('.modal-body').html('<p>'+'Произошла неизвестная ошибка!'+'</p>');
-                $('#infoModal').modal('show');
-            }
-        });
-        return false;
-    });
-
-    let printUrl = $('.docForm').attr('action');
-
-    $('.printDoc').on('click',function(){
-
-        $.ajax(printUrl ,{
-            type: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
-                "Accept": "application/pdf"
-            },
-            cache: false,
-            data: $('.docForm').serialize(),
-            success : function(response) {
-                console.log(response)
-                window.open("about:blank#data:application/octet-stream;base64," + response, '_blank').focus();
-                // w.document.open();
-                // w.document.write(data);
-                // w.document.close();
+                //console.log(response, response.print_link, response.edit_link); return false;
+                window.open(response.temporary_link, '_blank');
             },
             error: function (response) {
                 console.log(response);
                 $('.modal-title').html('Печать документа')
-                $('.modal-body').html('<p>'+'Произошла неизвестная ошибка при генерации документа !'+'</p>');
+                $('.modal-body').html('<p>'+'Произолшла ошибка при генерации документа!'+'</p>');
                 $('#infoModal').modal('show');
             }
         });

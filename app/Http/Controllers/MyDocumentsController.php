@@ -73,6 +73,18 @@ class MyDocumentsController extends BaseController
         ]);
     }
 
+    public function openTemporary(Request $request)
+    {
+        $document = $this->createNew($request);
+        abort_if(!$document, 500);
+
+        $temporary_link = route('my-docs.temporary', $document->id);
+        return response()->json([
+            'data' => $document,
+            'temporary_link' => $temporary_link,
+        ]);
+    }
+
     public function print(Document $document)
     {
         $pdf = $this->getPdfIfAllowed($document);
@@ -83,7 +95,7 @@ class MyDocumentsController extends BaseController
     public function temporary(Document $document)
     {
         $pdf = $this->getPdfIfAllowed($document);
-        $document->delete();
+        $document->forceDelete();
 
         return $pdf->stream('temporary.pdf');
     }
