@@ -64,7 +64,7 @@
 								<option value="none">Без НДС</option>
 								<option value="0">0%</option>
 								<option value="10">10%</option>
-								<option value="13">18%</option>
+								<option value="18">18%</option>
 								<option value="20">20%</option>
 							</select>
 						</div>

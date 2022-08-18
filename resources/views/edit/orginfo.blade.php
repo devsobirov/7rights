@@ -50,7 +50,7 @@
 								<option value="none">Без НДС</option>
 								<option value="0" @if($nds == 0) selected @endif>0%</option>
 								<option value="10" @if($nds == 10) selected @endif>10%</option>
-								<option value="13" @if($nds == 13) selected @endif>18%</option>
+								<option value="18" @if($nds == 18) selected @endif>18%</option>
 								<option value="20" @if($nds == 20) selected @endif>20%</option>
 							</select>
 						</div>

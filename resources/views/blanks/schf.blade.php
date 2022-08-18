@@ -195,7 +195,7 @@
 			<td style = "border: 1px solid #000; text-align: right;">{{ $itogSum }}</td>
 			<td colspan="2" style = "border: 1px solid #000; text-align:center"></td>
 			<td style = "border: 1px solid #000; text-align: right;"></td>
-			<td style = "border: 1px solid #000; text-align: right;">123</td>
+			<td style = "border: 1px solid #000; text-align: right;"></td>
 			<td colspan = "3" style = "border:none;"></td>
 		</tr>
 	</tfoot>

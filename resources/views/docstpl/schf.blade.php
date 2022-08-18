@@ -207,7 +207,7 @@
 								<option @if($nds == 'none' || is_null($nds)) selected @endif value="none">Без НДС</option>
 								<option @if($nds == 0) selected @endif value="0">0%</option>
 								<option @if($nds == 10) selected @endif value="10">10%</option>
-								<option @if($nds == 13) selected @endif value="13">18%</option>
+								<option @if($nds == 18) selected @endif value="18">18%</option>
 								<option @if($nds == 20) selected @endif value="20">20%</option>
 							</select>
 						</div>
