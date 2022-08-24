@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\BaseDocumentController as BaseController;
 use App\Models\Document;
 use App\Models\Template;
+use App\Services\Torg12PDFService;
 use GuzzleHttp\Utils;
 use Illuminate\Http\Request;
 
@@ -27,7 +28,14 @@ class DocumentsController extends BaseController
         $data = $request->post();
         $template = Template::getTemplateOrFail($data['doc_id']);
 
-        $pdf = $this->generatePdf($template->view_path, $data);
+        // Если товарная накладная
+        if ($template->id == 4) {
+            $pdf = new Torg12PDFService($data);
+            $pdf->preparePdf();
+        } else {
+            $pdf = $this->generatePdf($template->view_path, $data);
+        }
+
         //$pdf->save(storage_path().'_doc.pdf');
 
         return $pdf->stream('my.pdf');//,array('Attachment'=>0))->header('Content-Type','application/pdf');

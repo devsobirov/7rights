@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Document;
 use App\Http\Controllers\BaseDocumentController as BaseController;
 use App\Models\Template;
+use App\Services\Torg12PDFService;
 use GuzzleHttp\Utils;
 use Illuminate\Http\Request;
 
@@ -114,6 +115,13 @@ class MyDocumentsController extends BaseController
         if (!is_array($inputData)) {
             $inputData = Utils::jsonDecode($inputData, true);
         }
-        return $this->generatePdf($document->template->view_path, $inputData);
+
+        if ($document->template->id == 4) {
+            $pdf = new Torg12PDFService($inputData);
+            $pdf->preparePdf();
+        } else {
+            $pdf = $this->generatePdf($document->template->view_path, $inputData);
+        }
+        return $pdf;
     }
 }

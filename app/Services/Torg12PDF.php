@@ -5,6 +5,7 @@ namespace App\Services;
 
 use App\Libraries\EasyTable\ExPDF;
 use App\Libraries\EasyTable\EasyTable as easyTable;
+use Carbon\Carbon;
 
 /**
  *  Torg12PDF - https://gist.github.com/AlexanderKomkov/a52d21ce85001a50231315eb3e511b3b
@@ -203,14 +204,14 @@ class Torg12PDF extends ExPDF
     /**
      * Output Pdf.
      *
-     *
      * @return void
+     * @var string $outputAs 'I' - stream, 'D' - download, 'S' - save
      */
-    public function OutputPDF()
+    public function OutputPDF($outputAs = 'I')
     {
         $this->initializePDF();
         $this->printTablePDF();
-        $this->Output($this->titlePDF . '.pdf','I');
+        $this->Output($this->titlePDF . '.pdf',$outputAs);
     }
 
     // Page footer
@@ -356,16 +357,18 @@ class Torg12PDF extends ExPDF
 
     /**
      * Set Fio entity.
-     *
      * @param string $fio
-     *
-     * @return void
+     * @param string $accountant
+     * @param string $shipment_produced
      */
-    public function SetFioEntity($fio)
+    public function SetFioEntity($fio, $accountant = '', $shipment_produced = '')
     {
+        $accountant = !empty($accountant) ? $accountant : $fio;
+        $shipment_produced = !empty($shipment_produced) ? $shipment_produced : $fio;
+
         $this->SetLang('sshipment_allowed_fio', $fio);
-        $this->SetLang('accountant_fio', $fio);
-        $this->SetLang('shipment_produced_fio', $fio);
+        $this->SetLang('accountant_fio', $accountant);
+        $this->SetLang('shipment_produced_fio', $shipment_produced);
     }
 
     /**
@@ -419,13 +422,18 @@ class Torg12PDF extends ExPDF
     /**
      * Set Invoice Date.
      *
-     * @param Carbon $invoice_date
+     * @param Carbon|string $invoice_date
      *
      * @return void
      */
     public function SetInvoiceDate($invoice_date)
     {
-        $this->SetLang('invoice_date', $this->formatDate($invoice_date));
+        if ($invoice_date instanceof Carbon) {
+            $this->SetLang('invoice_date', $this->formatDate($invoice_date));
+        } else {
+            $this->SetLang('invoice_date', $invoice_date);
+        }
+
     }
 
     /**
@@ -457,7 +465,7 @@ class Torg12PDF extends ExPDF
     /**
      * Add Products.
      *
-     * @param arra $data
+     * @param array $data
      *
      * @return void
      */
@@ -474,7 +482,7 @@ class Torg12PDF extends ExPDF
                 )
                 {
                     $total_price = $product['price'] * $product['count'];
-
+                    $unit = !empty($product['unit']) ? $product['unit'] : '';
                     $this->sum_count += $product['count'];
                     $this->sum_price += $total_price;
 
@@ -482,6 +490,7 @@ class Torg12PDF extends ExPDF
                         'name' => $this->ru($product['name']),
                         'count' => $this->ru($product['count']),
                         'price' => $this->ru($this->formatPrice($product['price'])),
+                        'unit' => $this->ru($unit),
                         'total_price' => $this->ru($this->formatPrice($total_price)),
                     ];
                 }
@@ -859,7 +868,8 @@ class Torg12PDF extends ExPDF
                 $table->easyCell($key + 1, 'border: LTB; align: R; valign: M; paddingX: 2;');
                 $table->easyCell($product['name'], 'border: LTB; align: L; valign: M; paddingX: 2; paddingY: 0.5;');
                 $table->easyCell('', 'border: LTB; align: C; valign: M; paddingX: 2;');
-                $table->easyCell($this->GetLang('pcs'), 'border: LTB; align: C; valign: M; paddingX: 2;');
+                $table->easyCell($product['unit'], 'border: LTB; align: C; valign: M; paddingX: 2;');
+                //$table->easyCell($this->GetLang('pcs'), 'border: LTB; align: C; valign: M; paddingX: 2;');
                 $table->easyCell($this->GetLang('code_okei'), 'border: LTB; align: C; valign: M; paddingX: 2;');
                 $table->easyCell('', 'border: LTB; align: C; valign: M; paddingX: 2;');
                 $table->easyCell('', 'border: LTB; align: C; valign: M; paddingX: 2;');

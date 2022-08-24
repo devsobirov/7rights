@@ -1,6 +1,12 @@
-﻿<div class="row">
+<div class="row">
     <div class="col">
         <h4>Информация об организации</h4>
+        <div class="form-group row">
+            <label for="sch-okpo" class="col-sm-2 col-form-label">№ ОКПО</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="sch-okpo" value="{{ get_if_key_exists($data, 'sch_okpo') }}" name = "sch_okpo" placeholder="08468332">
+            </div>
+        </div>
         <div class="form-group row">
             <label for="sch-name" class="col-sm-2 col-form-label">Название</label>
             <div class="col-sm-10">
