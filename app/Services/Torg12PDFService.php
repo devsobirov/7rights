@@ -5,6 +5,7 @@ namespace App\Services;
 
 use App\Services\Torg12PDF;
 use App\Helpers\DocumentHelper;
+use PhpParser\Comment\Doc;
 
 class Torg12PDFService
 {
@@ -29,11 +30,14 @@ class Torg12PDFService
     public function preparePdf(): self
     {
         $this->pdf = new Torg12PDF();
+        $this->helper = new DocumentHelper();
 
         $this->setBaseData();
         $this->setOrganisationEntities();
         $this->setClientEntity();
 
+
+        $this->setNdsEntities();
         $this->pdf->AddProducts($this->getProductsData());
 
         return $this;
@@ -52,7 +56,7 @@ class Torg12PDFService
     protected function setBaseData(): void
     {
         $sch_number = $this->inputData['sch_number'];
-        $sch_date = (new DocumentHelper())->dateToText($this->inputData['sch_date']);
+        $sch_date = $this->helper->dateToText($this->inputData['sch_date']);
         $okpo = get_if_key_exists($this->inputData, 'sch_okpo');
 
         $this->pdf->SetTitlePDF($sch_number.'_torg12'); // Название документа
@@ -133,6 +137,18 @@ class Torg12PDFService
         if ($phone) $consignee_entity .= ', тел '. $phone;
 
         return $consignee_entity;
+    }
+
+
+    protected function setNdsEntities(): void
+    {
+        $nds_calc = get_if_key_exists($this->inputData, 'nds_calc');
+        $nds = get_if_key_exists($this->inputData, 'nds');
+        if (in_array($nds_calc, $this->helper->getNdsCalcTypes()) && !empty($nds)) {
+
+            $this->pdf->setNdsValues($nds, $nds_calc);
+        }
+
     }
 
     protected function getProductsData(): array

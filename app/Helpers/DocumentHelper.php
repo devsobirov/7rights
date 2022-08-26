@@ -6,6 +6,20 @@ namespace App\Helpers;
 
 class DocumentHelper
 {
+
+    const NDS_CALC_TYPES = ['up', 'summ'];
+
+    /**
+     * Вернет значение типов возможных калбкуляций НДС
+     *  указанных на шаблонах документов
+     *
+     * @return string[]
+     */
+    public function getNdsCalcTypes(): array
+    {
+        return self::NDS_CALC_TYPES;
+    }
+
     /**
      *  Вернет сумму прописью
      *

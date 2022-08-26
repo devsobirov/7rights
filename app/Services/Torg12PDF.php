@@ -16,12 +16,20 @@ use Carbon\Carbon;
 class Torg12PDF extends ExPDF
 {
 
+    const NDS_UP = 'up';    // НДС сверху
+    const NDS_SUM = 'summ'; // НДС сумме
+
     protected $titlePDF = 'torg12'; // Заголовок документа
 
     protected $sum_count = 0;	// Счетчик кол-ва товаров
-    protected $sum_price = 0; 	// Счетчик цены товаров
+    protected $sum_price = 0; 	// Счетчик цены товаров с учётом НДС
+    protected $sum_nds = 0;     // Сумма НДС товаров
+    protected $sum_without_nds = 0; // Счетчик цены товаров без учёта НДС
 
     protected $products = []; 	// Товары накладной
+
+    protected $nds_value = false; //Ставка НДС
+    protected $nds_calc_type; // НДС сверху или в сумме
 
     protected $lang = [
 
@@ -436,6 +444,15 @@ class Torg12PDF extends ExPDF
 
     }
 
+    public function setNdsValues($nds, $calc_type)
+    {
+        if ($nds && is_numeric($nds)) {
+            $this->nds_value = $nds;
+            $this->nds_calc_type = $calc_type;
+            $this->lang['without_nds'] = $nds;
+        }
+    }
+
     /**
      * Add Product.
      *
@@ -481,22 +498,79 @@ class Torg12PDF extends ExPDF
                     !empty($product['price'])
                 )
                 {
-                    $total_price = $product['price'] * $product['count'];
+
                     $unit = !empty($product['unit']) ? $product['unit'] : '';
                     $this->sum_count += $product['count'];
+
+                    $initial_total= $product['price'] * $product['count'];
+
+                    $price = $this->getPriceWithoutNds($product['price'], $this->getProductNds($product['price']));
+                    $nds = $this->getProductNds($initial_total);
+                    $price_without_nds = $this->getPriceWithoutNds($initial_total, $nds);
+                    $total_price = $this->getPriceWithNds($initial_total, $nds);
+
                     $this->sum_price += $total_price;
+                    $this->sum_without_nds += $price_without_nds;
+                    $this->sum_nds += $nds;
+
+//                    dd($initial_total, $nds, $this->nds_value, $this->getProductNds(100), [
+//                        'name' => $this->ru($product['name']),
+//                        'count' => $this->ru($product['count']),
+//                        'price' => $this->ru($this->formatPrice($price)),
+//                        'unit' => $this->ru($unit),
+//                        'price_without_nds' => $this->ru($this->formatPrice($price_without_nds)),
+//                        'total_price' => $this->ru($this->formatPrice($total_price)),
+//                        'nds' => $this->ru($this->formatPrice($nds))
+//                    ]);
 
                     $this->products[] = [
                         'name' => $this->ru($product['name']),
                         'count' => $this->ru($product['count']),
-                        'price' => $this->ru($this->formatPrice($product['price'])),
+                        'price' => $this->ru($this->formatPrice($price)),
                         'unit' => $this->ru($unit),
+                        'price_without_nds' => $this->ru($this->formatPrice($price_without_nds)),
                         'total_price' => $this->ru($this->formatPrice($total_price)),
+                        'nds' => $this->ru($this->formatPrice($nds))
                     ];
                 }
             }
             $this->updateProductsInfo();
         }
+    }
+
+
+    private function getProductNds($initialPrice): int
+    {
+        $nds = $this->nds_value;
+
+        if ($this->nds_calc_type === self::NDS_UP) {
+            return round($initialPrice * $nds * 0.01);
+        }
+
+        if ($this->nds_calc_type === self::NDS_SUM) {
+            $nds = $nds * 0.01 + 1;
+            return round($initialPrice - ($initialPrice / $nds));
+        }
+
+        return 0;
+    }
+
+    private function getPriceWithoutNds($initialPrice, $nds): int
+    {
+        if ($this->nds_value && $this->nds_calc_type == self::NDS_SUM) {
+            return round($initialPrice - $nds, 3);
+        }
+
+        return $initialPrice;
+    }
+
+    private function getPriceWithNds($initialPrice, $nds): int
+    {
+        if ($this->nds_value && $this->nds_calc_type == self::NDS_UP) {
+            return round($initialPrice + $nds, 3);
+        }
+
+        return $initialPrice;
     }
 
     /**
@@ -508,13 +582,14 @@ class Torg12PDF extends ExPDF
     protected function updateProductsInfo()
     {
         $this->sum_price = round($this->sum_price, 2);
+        $this->sum_without_nds = $this->formatPrice(round($this->sum_without_nds, 2));
+        $this->sum_nds = $this->formatPrice(round($this->sum_nds, 2)); //$this->sum_nds
 
         $this->SetLang('sum_format', $this->formatPrice($this->sum_price));
         $this->SetLang('sum_words', $this->sum2words($this->sum_price, true, true));
         $this->SetLang('count', $this->sum_count);
         $this->SetLang('count_words', $this->sum2words($this->sum_count, false));
     }
-
     /**
      * Ru.
      *
@@ -877,9 +952,9 @@ class Torg12PDF extends ExPDF
                 $table->easyCell('', 'border: LTB; align: C; valign: M; paddingX: 2;');
                 $table->easyCell($product['count'], 'border: LTB; align: R; valign: M; paddingX: 2;');
                 $table->easyCell($product['price'], 'border: LTB; align: R; valign: M; paddingX: 2;');
-                $table->easyCell($product['total_price'], 'border: LTB; align: R; valign: M; paddingX: 2;');
+                $table->easyCell($product['price_without_nds'], 'border: LTB; align: R; valign: M; paddingX: 2;');
                 $table->easyCell($this->GetLang('without_nds'), 'border: LTB; align: R; valign: M; paddingX: 1;');
-                $table->easyCell('', 'border: LTB; align: C; valign: M; paddingX: 2;');
+                $table->easyCell($product['nds'], 'border: LTB; align: C; valign: M; paddingX: 2;');
                 $table->easyCell($product['total_price'], 'border: 1; align: R; valign: M; paddingX: 2;');
                 $table->printRow();
 
@@ -892,9 +967,9 @@ class Torg12PDF extends ExPDF
         $table->easyCell("", 'border: LB; align: C; valign: M; paddingX: 2;');
         $table->easyCell($this->GetLang('count'), 'border: LB; align: R; valign: M; paddingX: 2;');
         $table->easyCell("X", 'border: LB; align: C; valign: M; paddingX: 2;');
-        $table->easyCell($this->GetLang('sum_format'), 'border: LB; align: R; valign: M; paddingX: 2;');
+        $table->easyCell($this->sum_without_nds, 'border: LB; align: R; valign: M; paddingX: 2;');
         $table->easyCell("X", 'border: LB; align: C; valign: M; paddingX: 2;');
-        $table->easyCell("0,00", 'border: LB; align: R; valign: M; paddingX: 2;');
+        $table->easyCell($this->sum_nds, 'border: LB; align: R; valign: M; paddingX: 2;');
         $table->easyCell($this->GetLang('sum_format'), 'border: LBR; align: R; valign: M; paddingX: 2; font-style: bold;');
         $table->printRow();
 
@@ -904,9 +979,9 @@ class Torg12PDF extends ExPDF
         $table->easyCell("", 'border: LB; align: C; valign: M; paddingX: 2;');
         $table->easyCell($this->GetLang('count'), 'border: LB; align: R; valign: M; paddingX: 2; font-style: bold;');
         $table->easyCell("X", 'border: LB; align: C; valign: M; paddingX: 2;');
-        $table->easyCell($this->GetLang('sum_format'), 'border: LB; align: R; valign: M; paddingX: 2; font-style: bold;');
+        $table->easyCell($this->sum_without_nds, 'border: LB; align: R; valign: M; paddingX: 2; font-style: bold;');
         $table->easyCell("X", 'border: LB; align: C; valign: M; paddingX: 2;');
-        $table->easyCell("0,00", 'border: LB; align: R; valign: M; paddingX: 2; font-style: bold;');
+        $table->easyCell($this->sum_nds, 'border: LB; align: R; valign: M; paddingX: 2; font-style: bold;');
         $table->easyCell($this->GetLang('sum_format'), 'border: LBR; align: R; valign: M; paddingX: 2; font-style: bold;');
         $table->printRow();
 
