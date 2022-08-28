@@ -101,7 +101,7 @@ class Torg12PDF extends ExPDF
         'summa' 			=> "сумма, руб. коп.",
 
         'pcs' 				=> "шт.",
-        'code_okei' 			=> "796",
+        'code_okei' 			=> "код по ОКЕИ",
         'without_nds' 			=> "без НДС",
         'total' 			=> "Итого",
         'total_invoice' 		=> "Всего по накладной",
@@ -513,16 +513,6 @@ class Torg12PDF extends ExPDF
                     $this->sum_without_nds += $price_without_nds;
                     $this->sum_nds += $nds;
 
-//                    dd($initial_total, $nds, $this->nds_value, $this->getProductNds(100), [
-//                        'name' => $this->ru($product['name']),
-//                        'count' => $this->ru($product['count']),
-//                        'price' => $this->ru($this->formatPrice($price)),
-//                        'unit' => $this->ru($unit),
-//                        'price_without_nds' => $this->ru($this->formatPrice($price_without_nds)),
-//                        'total_price' => $this->ru($this->formatPrice($total_price)),
-//                        'nds' => $this->ru($this->formatPrice($nds))
-//                    ]);
-
                     $this->products[] = [
                         'name' => $this->ru($product['name']),
                         'count' => $this->ru($product['count']),
@@ -530,7 +520,13 @@ class Torg12PDF extends ExPDF
                         'unit' => $this->ru($unit),
                         'price_without_nds' => $this->ru($this->formatPrice($price_without_nds)),
                         'total_price' => $this->ru($this->formatPrice($total_price)),
-                        'nds' => $this->ru($this->formatPrice($nds))
+                        'nds' => $this->ru($this->formatPrice($nds)),
+                        'okei_code' => $this->ru($product['okei_code']),
+                        'package_type' => $this->ru($product['package_type']),
+                        'package_v_odnom_m' => $this->ru($product['package_v_odnom_m']),
+                        'package_m_sht' => $this->ru($product['package_m_sht']),
+                        'brutto' => $this->ru($product['brutto']),
+                        //'netto' => $this->ru($product['netto']),
                     ];
                 }
             }
@@ -945,11 +941,11 @@ class Torg12PDF extends ExPDF
                 $table->easyCell('', 'border: LTB; align: C; valign: M; paddingX: 2;');
                 $table->easyCell($product['unit'], 'border: LTB; align: C; valign: M; paddingX: 2;');
                 //$table->easyCell($this->GetLang('pcs'), 'border: LTB; align: C; valign: M; paddingX: 2;');
-                $table->easyCell($this->GetLang('code_okei'), 'border: LTB; align: C; valign: M; paddingX: 2;');
-                $table->easyCell('', 'border: LTB; align: C; valign: M; paddingX: 2;');
-                $table->easyCell('', 'border: LTB; align: C; valign: M; paddingX: 2;');
-                $table->easyCell('', 'border: LTB; align: C; valign: M; paddingX: 2;');
-                $table->easyCell('', 'border: LTB; align: C; valign: M; paddingX: 2;');
+                $table->easyCell($product['okei_code'], 'border: LTB; align: C; valign: M; paddingX: 2;');
+                $table->easyCell($product['package_type'], 'border: LTB; align: C; valign: M; paddingX: 2;');
+                $table->easyCell($product['package_v_odnom_m'], 'border: LTB; align: C; valign: M; paddingX: 2;');
+                $table->easyCell($product['package_m_sht'], 'border: LTB; align: C; valign: M; paddingX: 2;');
+                $table->easyCell($product['brutto'], 'border: LTB; align: C; valign: M; paddingX: 2;');
                 $table->easyCell($product['count'], 'border: LTB; align: R; valign: M; paddingX: 2;');
                 $table->easyCell($product['price'], 'border: LTB; align: R; valign: M; paddingX: 2;');
                 $table->easyCell($product['price_without_nds'], 'border: LTB; align: R; valign: M; paddingX: 2;');

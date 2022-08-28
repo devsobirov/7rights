@@ -86,6 +86,7 @@
                 <div class = "col-md-10">
                     @yield('content')
                 </div>
+            </div>
         </main>
     </div>
 </body>

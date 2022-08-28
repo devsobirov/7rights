@@ -22,6 +22,9 @@ class Torg12PDFService
     const OUTPUT_AS_STREAM = 'I';
     const OUTPUT_AS_DOWNLOAD = 'D';
 
+    const DEFAULT_OKEI_CODE = 796;
+    const DEFAULT_OKEI_TITLE = 'шт';
+
     public function __construct(array $data)
     {
         $this->inputData = $data;
@@ -158,11 +161,21 @@ class Torg12PDFService
 
         if (is_array($tableData) && count($tableData)) {
             foreach ($tableData as $product) {
+
+                $unit = get_if_key_exists($product, 'edIzm', self::DEFAULT_OKEI_TITLE);
+                $okei_code = get_if_key_exists($this->helper::OKEI_TYPES, $unit, self::DEFAULT_OKEI_CODE);
+
                 $products[] = [
                     'name' => get_if_key_exists($product, 'gruzName'),
                     'count' => (integer) get_if_key_exists($product, 'gruzCount'),
                     'price' => (integer) get_if_key_exists($product, 'gruzPrice'),
-                    'unit' => get_if_key_exists($product, 'edIzm')
+                    'unit' => $unit,
+                    'okei_code' => $okei_code,
+                    'package_type' => get_if_key_exists($product, 'package_type'),
+                    'package_v_odnom_m' => get_if_key_exists($product, 'package_v_odnom_m'),
+                    'package_m_sht' => get_if_key_exists($product, 'package_m_sht'),
+                    'brutto' => get_if_key_exists($product, 'brutto'),
+//                    'netto' => get_if_key_exists($product, 'netto'),
                 ];
             }
         }

@@ -56,6 +56,7 @@ class MyDocumentsController extends BaseController
         if ($id) {
             $document = Document::findOrFail($id);
             abort_if($document->user_id != auth()->id(), 403);
+
             $decodedData = Utils::jsonEncode($request->except('_token'));
             $result = $document->update(['data' => $decodedData]);
             abort_if(!$result, 500);
